@@ -1,0 +1,33 @@
+---
+
+- name: Deploy Nginx on localhost
+  hosts: web
+  connection: local
+  become: yes
+
+  tasks: 
+
+  - name: Install Nginx
+    apt:
+      name: nginx
+      state: present
+      update_cache: yes
+
+
+  - name: Enable service is running
+    service: 
+      name: nginx
+      state: stopped
+      enabled: no
+
+  - name: Copy custom index.html 
+    copy:
+      src: files/index.html
+      dest: /var/www/html/index.html
+
+
+  - name: Restart Nginx
+    service:
+      name: nginx
+      state: stopped                      
+      
